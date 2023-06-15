@@ -24,6 +24,8 @@ button {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  border: none;
+  
 }
 
 .game-wrapper {

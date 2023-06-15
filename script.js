@@ -20,19 +20,63 @@ const Player = (() => {
   };
 })();
 
-const gameController = (function () {
-  "use strict";
-  //? Alternate between player input/turns
-  //code
-})();
-
 //? gameBoard Module
 const gameBoard = (function () {
   "use strict";
-  let _gameBoardArray = ["x", "x", null, "o", "x", null, "x", null, "x"];
+  let _gameBoardArray = [null, null, null, null, null, null, null, null, null];
+  const players = Player.getplayers();
+  let playerTurn = true;
 
-  function updateGameArray(index, value) {
-    _gameBoardArray[index] = value;
+  function updateGameArray(index) {
+    if (playerTurn === true) {
+      _gameBoardArray[index] = players.player1.symbol;
+      playerTurn = false;
+    } else if (playerTurn === false) {
+      _gameBoardArray[index] = players.player2.symbol;
+      playerTurn = true;
+    }
+  }
+
+  function checkWinner() {
+    const conditions = [
+      //cols
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      //rows
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      //diagonals
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < conditions.length; i++) {
+      const [a, b, c] = conditions[i];
+
+      console.log([a, b, c]);
+      if (
+        _gameBoardArray[a] !== null &&
+        _gameBoardArray[a] === _gameBoardArray[b] &&
+        _gameBoardArray[a] === _gameBoardArray[c]
+      ) {
+        handleWinner(
+          ...[_gameBoardArray[a], _gameBoardArray[b], _gameBoardArray[c]]
+        );
+        return;
+      }
+    }
+    console.log("looking for winner");
+  }
+
+  function handleWinner(a, b, c) {
+    console.log("executed");
+    if (a === "o" && b === "o" && c === "o") {
+      alert("player one winners!");
+    } else if (a === "x" && b === "x" && c === "x") {
+      alert("player two winners!");
+    }
   }
 
   return {
@@ -40,6 +84,7 @@ const gameBoard = (function () {
       return [..._gameBoardArray];
     },
     updateGameArray,
+    checkWinner,
   };
 })();
 
@@ -48,6 +93,7 @@ const displayController = (function () {
   "use strict";
 
   const gameBoardContainer = document.querySelector("#gameBoard");
+
   function createGameBoard(gameArray) {
     gameArray.forEach((element, index) => {
       const button = document.createElement("button");
@@ -72,11 +118,9 @@ const displayController = (function () {
   }
 
   function handleButtonClick(index) {
-    const newValue = "i";
-
-    gameBoard.updateGameArray(index, newValue);
+    gameBoard.updateGameArray(index);
     updateGameboard();
-    console.log(gameBoard.getGameBoardArray());
+    gameBoard.checkWinner();
   }
 
   function removeElementa() {
@@ -89,6 +133,7 @@ const displayController = (function () {
     const gameArray = gameBoard.getGameBoardArray();
     removeElementa();
     createGameBoard(gameArray);
+    console.log(gameArray);
   }
 
   return {
