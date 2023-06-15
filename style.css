@@ -1,3 +1,43 @@
+:root {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 html {
   background-color: rgb(171, 176, 182);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100%;
+}
+
+button {
+  font-size: 5rem;
+  padding: 0;
+  margin: 0;
+  width: 6rem;
+  height: 6rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.game-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10rem 0;
+  height: 600px;
+  width: 800px;
+  background-color: rgb(215, 230, 250);
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
 }
