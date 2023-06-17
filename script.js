@@ -23,16 +23,16 @@ const Player = (() => {
 //? gameBoard Module
 const gameBoard = (function () {
   "use strict";
-  let _gameBoardArray = [null, null, null, null, null, null, null, null, null];
+  let _gameArray = [null, null, null, null, null, null, null, null, null];
   const players = Player.getplayers();
   let playerTurn = true;
 
   function updateGameArray(index) {
     if (playerTurn === true) {
-      _gameBoardArray[index] = players.player1.symbol;
+      _gameArray[index] = players.player1.symbol;
       playerTurn = false;
     } else if (playerTurn === false) {
-      _gameBoardArray[index] = players.player2.symbol;
+      _gameArray[index] = players.player2.symbol;
       playerTurn = true;
     }
   }
@@ -52,33 +52,62 @@ const gameBoard = (function () {
       [2, 4, 6],
     ];
 
+    let isTie = true;
+
     for (let i = 0; i < conditions.length; i++) {
       const [a, b, c] = conditions[i];
-      //! bug: full board triggers tie, even if a player has a row
+
       if (
-        _gameBoardArray[a] !== null &&
-        _gameBoardArray[a] === _gameBoardArray[b] &&
-        _gameBoardArray[a] === _gameBoardArray[c]
+        _gameArray[a] !== null &&
+        _gameArray[a] === _gameArray[b] &&
+        _gameArray[a] === _gameArray[c]
       ) {
         displayController.displayWinnerText(
-          ...[_gameBoardArray[a], _gameBoardArray[b], _gameBoardArray[c]]
+          ...[_gameArray[a], _gameArray[b], _gameArray[c]]
         );
+        disableBtns();
         return;
-      } else if (_gameBoardArray.every((element) => element !== null)) {
+      }
+
+      if (_gameArray[a] === _gameArray[b] && _gameArray[a] === _gameArray[c]) {
+        isTie = false;
+      }
+
+      if (isTie && _gameArray.every((element) => element !== null)) {
         displayController.displayWinnerText(
-          ...[_gameBoardArray[a], _gameBoardArray[b], _gameBoardArray[c]]
+          ...[_gameArray[a], _gameArray[b], _gameArray[c]]
         );
-        return;
       }
     }
   }
 
+  function resetGameArray() {
+    _gameArray = [null, null, null, null, null, null, null, null, null];
+    console.log(_gameArray);
+  }
+
+  function disableBtns() {
+    const buttons = document.querySelectorAll(".game-button");
+    buttons.forEach((button) => {
+      button.disabled = true;
+    });
+  }
+
+  function enableBtns() {
+    const buttons = document.querySelectorAll(".game-button");
+    buttons.forEach((button) => {
+      button.disabled = false;
+    });
+  }
+
   return {
     getGameBoardArray: function () {
-      return [..._gameBoardArray];
+      return [..._gameArray];
     },
     updateGameArray,
     checkWinner,
+    enableBtns,
+    resetGameArray,
   };
 })();
 
@@ -91,7 +120,7 @@ const displayController = (function () {
   function createGameBoard(gameArray) {
     gameArray.forEach((element, index) => {
       const button = document.createElement("button");
-      button.classList.add(`button`);
+      button.classList.add("game-button");
       button.setAttribute("id", `gameBtn_${index}`);
 
       if (element === null) {
@@ -103,7 +132,7 @@ const displayController = (function () {
       gameBoardContainer.appendChild(button);
       button.addEventListener("click", () => {
         if (gameArray[index] !== null) {
-          button.disabeled = true;
+          button.disabeld = true;
         } else {
           handleGameBoardClick(index);
         }
@@ -111,22 +140,36 @@ const displayController = (function () {
     });
   }
 
+  function resetGameBtn() {
+    const resetBtn = document.querySelector("#resetBtn");
+    resetBtn.addEventListener("click", () => {
+      gameBoard.resetGameArray();
+      gameBoard.enableBtns();
+      updateGameboard();
+      hideWinnerText();
+    });
+  }
+  resetGameBtn();
+
   function displayWinnerText(a, b, c) {
     const players = Player.getplayers();
-    const winnerTxt = document.querySelector("#winnerTxt");
-    const text = document.createElement("h2");
-    text.classList.add("text");
+    const text = document.querySelector(".game-status");
 
     if (a === "o" && b === "o" && c === "o") {
       text.textContent = `${players.player1.name} wins!`;
+      text.style.visibility = "visible";
     } else if (a === "x" && b === "x" && c === "x") {
       text.textContent = `${players.player2.name} wins!`;
+      text.style.visibility = "visible";
     } else {
       text.textContent = "It's a tie!";
+      text.style.visibility = "visible";
     }
+  }
 
-    winnerTxt.innerHTML = "";
-    winnerTxt.appendChild(text);
+  function hideWinnerText() {
+    const text = document.querySelector(".game-status");
+    text.style.visibility = "hidden";
   }
 
   function handleGameBoardClick(index) {
@@ -150,6 +193,7 @@ const displayController = (function () {
   return {
     updateGameboard,
     displayWinnerText,
+    hideWinnerText,
   };
 })();
 

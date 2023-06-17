@@ -1,7 +1,6 @@
 :root {
   box-sizing: border-box;
-
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -12,30 +11,6 @@ body {
   height: 100vh;
   padding: 0;
   margin: 0;
-}
-
-#svg-container {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  z-index: -1;
-}
-
-
-
-#svg-container svg {
-  width: 100%;
-  height: 100%;
-}
-
-#noiseContainer {
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
 }
 
 button {
@@ -49,7 +24,7 @@ button {
   text-overflow: ellipsis;
   border: none;
   background-color: rgba(24, 35, 46, 0);
-  color: rgb(255, 232, 171);
+  color: rgb(255, 212, 171);
 }
 
 h1,
@@ -58,12 +33,15 @@ h2 {
   align-self: center;
 }
 
+h1 {
+  font-size: 2.7rem;
+}
+
 .overlay {
   position: absolute;
   min-height: 100vh;
   min-width: 100%;
-  background-color: rgba(0, 0, 0, 0.199);
-  
+  background-image: radial-gradient(rgba(0, 0, 0, 0), rgb(0, 7, 12));
 }
 
 .game-wrapper {
@@ -72,11 +50,11 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
   margin: 7rem 0;
-  height: 650px;
+  height: 680px;
   width: 700px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
-  background-image: radial-gradient(rgb(24, 35, 46), rgb(8, 16, 24));
-  border-radius: 12px;
+  background-image: radial-gradient(rgb(29, 46, 54), rgb(8, 16, 24));
+  border-radius: 48px;
 }
 
 .board-wrapper {
@@ -90,29 +68,20 @@ h2 {
 }
 
 .game-board > button {
-  border: 5px solid rgb(223, 210, 190);
+  border: 2px solid rgb(223, 210, 190);
 }
 
-.game-board > button:nth-child(3n + 1) {
-  border-left: none;
-}
-
+.game-board > button:nth-child(3n + 1),
 .game-board > button:nth-child(3n + 2) {
   border-left: none;
 }
 
 .game-board > button:nth-child(3n + 3) {
   border-left: none;
-}
-
-.game-board > button:nth-child(3n + 3) {
   border-right: none;
 }
 
-.game-board > button:nth-child(-n + 3) {
-  border-bottom: none;
-}
-
+.game-board > button:nth-child(-n + 3),
 .game-board > button:nth-child(-n + 15) {
   border-bottom: none;
 }
@@ -121,10 +90,14 @@ h2 {
   border-top: none;
 }
 
+.game-status {
+  visibility: hidden;
+}
+
 .winner-txt {
   text-align: center;
-  margin: 12px;
-  width: 100%;
+  margin: 12 0px;
+  width: 700px;
 }
 
 .btn-wrapper {
@@ -137,5 +110,28 @@ h2 {
   height: 50px;
   width: 100px;
   border-radius: 6px;
-  margin: 0 0 30px 0;
+  margin: 0 0 40px 0;
+  box-shadow: rgba(0, 0, 0, 0.356) 0px 20px 30px -10px;
+  background-image: linear-gradient(rgb(25, 46, 48), rgb(16, 23, 37));
+}
+
+#svg-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  z-index: -1;
+}
+
+#svg-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+#noiseContainer {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }

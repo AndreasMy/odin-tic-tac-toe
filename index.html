@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,600;1,100&display=swap');
+    </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
-      <filter id='noiseFilter'>
-        <feTurbulence 
-          type='fractalNoise' 
-          baseFrequency='0.6' 
-          stitchTiles='stitch'/>
-         <feColorMatrix in="colorNoise" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />
-            <feComposite operator="in" in2="SourceGraphic" result="monoNoise"/>
-            <feBlend in="SourceGraphic" in2="monoNoise" mode="screen" />
-      </filter>
+    <div id="svg-container">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
@@ -107,9 +102,11 @@
       <div class="board-wrapper">
         <div class="game-board" id="gameBoard"></div>
       </div>
-      <div class="winner-txt" id="winnerTxt"></div>
+      <div class="winner-txt" id="winnerTxt">
+        <h2 class="game-status">Dummy words</h2>
+      </div>
       <div class="btn-wrapper">
-        <button class="game-btn" id="gamBtn">Start</button>
+        <button class="game-btn" id="resetBtn">Reset</button>
       </div>
     </div>
 
