@@ -54,28 +54,22 @@ const gameBoard = (function () {
 
     for (let i = 0; i < conditions.length; i++) {
       const [a, b, c] = conditions[i];
-
-      console.log([a, b, c]);
+      //! bug: full board triggers tie, even if a player has a row
       if (
         _gameBoardArray[a] !== null &&
         _gameBoardArray[a] === _gameBoardArray[b] &&
         _gameBoardArray[a] === _gameBoardArray[c]
       ) {
-        handleWinner(
+        displayController.displayWinnerText(
+          ...[_gameBoardArray[a], _gameBoardArray[b], _gameBoardArray[c]]
+        );
+        return;
+      } else if (_gameBoardArray.every((element) => element !== null)) {
+        displayController.displayWinnerText(
           ...[_gameBoardArray[a], _gameBoardArray[b], _gameBoardArray[c]]
         );
         return;
       }
-    }
-    console.log("looking for winner");
-  }
-
-  function handleWinner(a, b, c) {
-    console.log("executed");
-    if (a === "o" && b === "o" && c === "o") {
-      alert("player one winners!");
-    } else if (a === "x" && b === "x" && c === "x") {
-      alert("player two winners!");
     }
   }
 
@@ -111,19 +105,37 @@ const displayController = (function () {
         if (gameArray[index] !== null) {
           button.disabeled = true;
         } else {
-          handleButtonClick(index);
+          handleGameBoardClick(index);
         }
       });
     });
   }
 
-  function handleButtonClick(index) {
+  function displayWinnerText(a, b, c) {
+    const players = Player.getplayers();
+    const winnerTxt = document.querySelector("#winnerTxt");
+    const text = document.createElement("h2");
+    text.classList.add("text");
+
+    if (a === "o" && b === "o" && c === "o") {
+      text.textContent = `${players.player1.name} wins!`;
+    } else if (a === "x" && b === "x" && c === "x") {
+      text.textContent = `${players.player2.name} wins!`;
+    } else {
+      text.textContent = "It's a tie!";
+    }
+
+    winnerTxt.innerHTML = "";
+    winnerTxt.appendChild(text);
+  }
+
+  function handleGameBoardClick(index) {
     gameBoard.updateGameArray(index);
     updateGameboard();
     gameBoard.checkWinner();
   }
 
-  function removeElementa() {
+  function removeElements() {
     while (gameBoardContainer.firstChild) {
       gameBoardContainer.removeChild(gameBoardContainer.firstChild);
     }
@@ -131,13 +143,13 @@ const displayController = (function () {
 
   function updateGameboard() {
     const gameArray = gameBoard.getGameBoardArray();
-    removeElementa();
+    removeElements();
     createGameBoard(gameArray);
-    console.log(gameArray);
   }
 
   return {
     updateGameboard,
+    displayWinnerText,
   };
 })();
 
