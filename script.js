@@ -2,11 +2,11 @@
 const Player = (() => {
   const players = {
     player1: {
-      name: "player1",
+      name: "Player",
       symbol: "o",
     },
     player2: {
-      name: "player2",
+      name: "Computer",
       symbol: "x",
     },
   };
@@ -27,13 +27,27 @@ const gameBoard = (function () {
   const players = Player.getplayers();
   let playerTurn = true;
 
+  function updateNullIPndices() {
+    const nullIndices = [];
+    for (let i = 0; i < _gameArray.length; i++) {
+      if (_gameArray[i] === null) {
+        nullIndices.push(i);
+      }
+    }
+    console.log(nullIndices);
+    return nullIndices;
+  }
+
   function updateGameArray(index) {
-    if (playerTurn === true) {
+    let nullIndices = updateNullIPndices();
+    if (nullIndices.length > 0) {
       _gameArray[index] = players.player1.symbol;
-      playerTurn = false;
-    } else if (playerTurn === false) {
-      _gameArray[index] = players.player2.symbol;
-      playerTurn = true;
+
+      nullIndices = updateNullIPndices();
+
+      const randomIndex =
+        nullIndices[Math.floor(Math.random() * nullIndices.length)];
+      _gameArray[randomIndex] = players.player2.symbol;
     }
   }
 
@@ -83,7 +97,6 @@ const gameBoard = (function () {
 
   function resetGameArray() {
     _gameArray = [null, null, null, null, null, null, null, null, null];
-    console.log(_gameArray);
   }
 
   function disableBtns() {
